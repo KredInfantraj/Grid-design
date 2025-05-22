@@ -20,7 +20,7 @@
      
       <meta-data
         android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyB3zZd9Dbs9mvwJCQ7riQGgdd1-GjLkmS0" />
+        android:value="Google_APIKey" />
 
           <provider
             android:name="androidx.core.content.FileProvider"
