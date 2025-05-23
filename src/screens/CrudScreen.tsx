@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -10,14 +10,32 @@ import {
   Pressable,
 } from 'react-native';
 import { useItemStore } from '../store/UserItemStore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UserScreen = () => {
   const { items, addItem, updateItem, deleteItem, getItem } = useItemStore();
 
   const [name, setName] = useState('');
-  const [Location, setDescription] = useState('');
+  const [Location, setLocation] = useState('');
   const [editId, setEditId] = useState<string | null>(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+ const viewAllStorageKeys = async () => {
+    const keys = await AsyncStorage.getAllKeys();
+    console.log('All storage keys:', keys);
+  };
+
+  const viewZustandData = async () => {
+    const data = await AsyncStorage.getItem('item-storage');
+    console.log('Persisted items:', JSON.parse(data || '{}'));
+  };
+
+ useEffect(() => {
+    viewAllStorageKeys();
+    viewZustandData();
+  }, []);
+
+
 
   const handleAddOrUpdate = () => {
     if (name && Location) {
@@ -34,7 +52,7 @@ const UserScreen = () => {
     const item = getItem(id);
     if (item) {
       setName(item.name);
-      setDescription(item.Location);
+      setLocation(item.Location);
       setEditId(id);
       setModalVisible(true);
     }
@@ -42,7 +60,7 @@ const UserScreen = () => {
 
   const resetForm = () => {
     setName('');
-    setDescription('');
+    setLocation('');
     setEditId(null);
     setModalVisible(false);
   };
@@ -120,17 +138,17 @@ const UserScreen = () => {
               <View style={styles.modalBody}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Item name"
+                  placeholder="Event name"
                   placeholderTextColor="#9e9e9e"
                   value={name}
                   onChangeText={setName}
                 />
                 <TextInput
                   style={[styles.input, styles.descriptionInput]}
-                  placeholder="Description"
+                  placeholder="Location"
                   placeholderTextColor="#9e9e9e"
                   value={Location}
-                  onChangeText={setDescription}
+                  onChangeText={setLocation}
                   multiline
                 />
               </View>
