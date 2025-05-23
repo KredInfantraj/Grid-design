@@ -180,12 +180,12 @@ const UserScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#121212', // Dark background
+    backgroundColor: '#121212', 
   },
   header: {
     padding: 20,
     paddingTop: 40,
-    backgroundColor: '#1e1e1e', // Dark header
+    backgroundColor: '#1e1e1e',
     elevation: 2,
     shadowColor: '#000',
     shadowOpacity: 0.1,
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: '500',
-    color: '#4CAF50', // Green text
+    color: '#4CAF50', 
   },
   headerDivider: {
     height: 2,
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     paddingBottom: 80,
   },
   item: {
-    backgroundColor: '#1e1e1e', // Dark card background
+    backgroundColor: '#1e1e1e', 
     borderRadius: 8,
     marginBottom: 12,
     elevation: 1,
@@ -228,12 +228,12 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#4CAF50', // Green text
+    color: '#4CAF50', 
     marginBottom: 4,
   },
   itemDescription: {
     fontSize: 14,
-    color: '#9e9e9e', // Light gray for secondary text
+    color: '#9e9e9e', 
     marginBottom: 12,
   },
   itemActions: {
@@ -247,25 +247,25 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   editButton: {
-    backgroundColor: '#2e2e2e', // Dark button
-    borderColor: '#4CAF50', // Green border
+    backgroundColor: '#2e2e2e', 
+    borderColor: '#4CAF50', 
     borderWidth: 1,
   },
   deleteButton: {
-    backgroundColor: '#2e2e2e', // Dark button
-    borderColor: '#f44336', // Red border
+    backgroundColor: '#2e2e2e', 
+    borderColor: '#f44336', 
     borderWidth: 1,
   },
   actionButtonText: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#4CAF50', // Green text
+    color: '#4CAF50', 
   },
   deleteButtonText: {
-    color: '#f44336', // Red text for delete
+    color: '#f44336', 
   },
   addButton: {
-    backgroundColor: '#4CAF50', // Green button
+    backgroundColor: '#4CAF50', 
     padding: 14,
     margin: 16,
     borderRadius: 4,
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 18,
-    color: '#4CAF50', // Green text
+    color: '#4CAF50',
     marginBottom: 8,
   },
   emptySubtext: {
@@ -301,11 +301,11 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: '85%',
-    backgroundColor: '#1e1e1e', // Dark modal
+    backgroundColor: '#1e1e1e', 
     borderRadius: 8,
     overflow: 'hidden',
     elevation: 8,
-    borderColor: '#4CAF50', // Green border
+    borderColor: '#4CAF50',
     borderWidth: 1,
   },
   modalHeader: {
@@ -316,18 +316,18 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 18,
     fontWeight: '500',
-    color: '#4CAF50', // Green text
+    color: '#4CAF50', 
     textAlign: 'center',
   },
   modalBody: {
     padding: 16,
   },
   input: {
-    backgroundColor: '#2e2e2e', // Dark input
+    backgroundColor: '#2e2e2e', 
     borderRadius: 4,
     padding: 12,
     fontSize: 16,
-    color: '#ffffff', // White text
+    color: '#ffffff',
     marginBottom: 16,
     borderWidth: 1,
     borderColor: '#333333',
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   cancelButton: {
-    backgroundColor: '#2e2e2e', // Dark button
+    backgroundColor: '#2e2e2e', 
     borderColor: '#757575',
     borderWidth: 1,
   },
@@ -359,7 +359,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   saveButton: {
-    backgroundColor: '#4CAF50', // Green button
+    backgroundColor: '#4CAF50',
   },
   saveButtonText: {
     color: '#ffffff',
