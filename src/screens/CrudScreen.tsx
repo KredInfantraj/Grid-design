@@ -12,7 +12,7 @@ import {
 import { useItemStore } from '../store/UserItemStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const UserScreen = () => {
+const CrudScreen = () => {
   const { items, addItem, updateItem, deleteItem, getItem } = useItemStore();
 
   const [name, setName] = useState('');
@@ -367,4 +367,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default UserScreen;
+export default CrudScreen;

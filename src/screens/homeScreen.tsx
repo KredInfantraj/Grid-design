@@ -18,6 +18,7 @@ import MapView, { PROVIDER_GOOGLE,Marker } from 'react-native-maps';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -185,14 +186,14 @@ interface PDFResult {
   base64?: string;
 }
 
-const HomeScreens = () => {
+const HomeScreen = () => {
  
 
   const [showMap, setShowMap] = useState(false);
   const { width } = useWindowDimensions();
   const numColumns = 2;
   const cardWidth = (width - 36) / numColumns;
-
+  const navigation = useNavigation();
  
   
   const openPDF = async (filePath: string) => {
@@ -369,8 +370,12 @@ const HomeScreens = () => {
         <Text style={styles.headerSubtitle}>Find and book the best rock events in NYC</Text>
       </View>
 
-
-     
+   <TouchableOpacity 
+    style={styles.crudButton}
+    onPress={() => navigation.navigate('CrudScreen' as never)}
+  >
+    <Text style={styles.crudButtonText}>Manage Events</Text>
+  </TouchableOpacity>
       {showMap ? (
     <View style={{ flex: 1 }}>
       <MapView
@@ -611,7 +616,21 @@ const styles = StyleSheet.create({
     fontSize: 16,
     letterSpacing: 1,
   },
+  crudButton: {
+  marginTop: 10,
+  backgroundColor: '#b5ff00',
+  paddingHorizontal: 16,
+  paddingVertical: 8,
+  borderRadius: 20,
+  borderWidth: 1,
+  borderColor: '#232323',
+},
+crudButtonText: {
+  color: '#101010',
+  fontWeight: 'bold',
+  fontSize: 14,
+},
 });
 
 
-export default HomeScreens;
+export default HomeScreen;
