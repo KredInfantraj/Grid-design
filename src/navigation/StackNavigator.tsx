@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
+import HomeScreen from '../screens/homeScreen';
 import CrudScreen from '../screens/CrudScreen';
-
+import TicketScreen from '../screens/TicketScreen';
 const Stack = createStackNavigator();
 
 function StackNavigator() {
@@ -15,12 +15,17 @@ function StackNavigator() {
       <Stack.Screen 
         name="HomeScreens" 
         component={HomeScreen}
-        options={{ title: 'Home' }}
+        // options={{ title: 'Home' }}
       />
       <Stack.Screen 
         name="CrudScreen" 
         component={CrudScreen}
-        options={{ title: 'User' }}
+        // options={{ title: 'User' }}
+      />
+      <Stack.Screen 
+        name="Ticket" 
+        component={TicketScreen} 
+        // options={{ title: 'Your Ticket' }}
       />
     </Stack.Navigator>
   );

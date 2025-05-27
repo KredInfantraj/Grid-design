@@ -370,12 +370,25 @@ const HomeScreen = () => {
         <Text style={styles.headerSubtitle}>Find and book the best rock events in NYC</Text>
       </View>
 
-   <TouchableOpacity 
-    style={styles.crudButton}
-    onPress={() => navigation.navigate('CrudScreen' as never)}
-  >
-    <Text style={styles.crudButtonText}>Manage Events</Text>
-  </TouchableOpacity>
+    <View style={styles.buttonContainer}>
+      <TouchableOpacity 
+        style={styles.crudButton}
+        onPress={() => navigation.navigate('CrudScreen' as never)}
+      >
+        <Text style={styles.crudButtonIcon}>✏️</Text>
+        <Text style={styles.crudButtonText}>Manage Events</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity 
+        style={styles.crudButton}
+        onPress={() => navigation.navigate('Ticket' as never)}
+      >
+        <Text style={styles.crudButtonIcon}>🎟️</Text>
+        <Text style={styles.crudButtonText}>View Tickets</Text>
+      </TouchableOpacity>
+    </View>
+
+
       {showMap ? (
     <View style={{ flex: 1 }}>
       <MapView
@@ -616,19 +629,44 @@ const styles = StyleSheet.create({
     fontSize: 16,
     letterSpacing: 1,
   },
-  crudButton: {
-  marginTop: 10,
-  backgroundColor: '#b5ff00',
-  paddingHorizontal: 16,
-  paddingVertical: 8,
-  borderRadius: 20,
-  borderWidth: 1,
-  borderColor: '#232323',
+ buttonContainer: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  gap: 15,
+  paddingHorizontal: 20,
+  marginBottom: 20,
+  marginTop: 15,
 },
+
+crudButton: {
+  backgroundColor: 'transparent',
+  paddingHorizontal: 22,
+  paddingVertical: 12,
+  borderRadius: 30,
+  borderWidth: 2,
+  borderColor: '#b5ff00',
+  shadowColor: '#b5ff00',
+  shadowOffset: { width: 0, height: 0 },
+  shadowOpacity: 0.4,
+  shadowRadius: 10,
+  elevation: 5,
+  minWidth: 150,
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'row',
+},
+
 crudButtonText: {
-  color: '#101010',
+  color: '#b5ff00',
   fontWeight: 'bold',
   fontSize: 14,
+  marginLeft: 8,
+  letterSpacing: 0.5,
+},
+
+crudButtonIcon: {
+  fontSize: 16,
+  color: '#b5ff00',
 },
 });
 
