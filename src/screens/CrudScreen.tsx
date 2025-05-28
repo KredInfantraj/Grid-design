@@ -11,10 +11,11 @@ import {
 } from 'react-native';
 import { useItemStore } from '../store/UserItemStore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useTheme } from '../Provider/ThemeProvider';
 
 const CrudScreen = () => {
+  const{theme}=useTheme()
   const { items, addItem, updateItem, deleteItem, getItem } = useItemStore();
-
   const [name, setName] = useState('');
   const [Location, setLocation] = useState('');
   const [editId, setEditId] = useState<string | null>(null);
@@ -77,6 +78,7 @@ const CrudScreen = () => {
         <Text style={styles.itemName}>{item.name}</Text>
         <Text style={styles.itemDescription}>{item.Location}</Text>
         <View style={styles.itemActions}>
+          
           <TouchableOpacity 
             style={[styles.actionButton, styles.editButton]}
             onPress={() => handleEdit(item.id)}
@@ -93,6 +95,197 @@ const CrudScreen = () => {
       </View>
     </Pressable>
   );
+
+const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme === 'dark' ? '#121212' : '#f5f7fa',
+    },
+    header: {
+      padding: 20,
+      paddingTop: 40,
+      backgroundColor: theme === 'dark' ? '#1e1e1e' : '#ffffff',
+      elevation: 2,
+      shadowColor: '#000',
+      shadowOpacity: theme === 'dark' ? 0.1 : 0.05,
+      shadowRadius: theme === 'dark' ? 2 : 4,
+      shadowOffset: { height: 2, width: 0 },
+    },
+    title: {
+      fontSize: 24,
+      fontWeight: '500',
+      color: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+    },
+    headerDivider: {
+      height: 2,
+      backgroundColor: theme === 'dark' ? '#333333' : '#e2e8f0',
+      marginTop: 8,
+    },
+    listContent: {
+      padding: 16,
+      paddingBottom: 80,
+    },
+    item: {
+      backgroundColor: theme === 'dark' ? '#1e1e1e' : '#ffffff',
+      borderRadius: 8,
+      marginBottom: 12,
+      elevation: 1,
+      shadowColor: '#000',
+      shadowOpacity: theme === 'dark' ? 0.05 : 0.1,
+      shadowRadius: 4,
+      shadowOffset: { height: 1, width: 0 },
+      overflow: 'hidden',
+      borderColor: theme === 'dark' ? '#333333' : '#e2e8f0',
+      borderWidth: 1,
+    },
+    itemPressed: {
+      backgroundColor: theme === 'dark' ? '#252525' : '#f8fafc',
+    },
+    itemContent: {
+      padding: 16,
+    },
+    itemName: {
+      fontSize: 18,
+      fontWeight: '500',
+      color: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+      marginBottom: 4,
+    },
+    itemDescription: {
+      fontSize: 14,
+      color: theme === 'dark' ? '#9e9e9e' : '#64748b',
+      marginBottom: 12,
+    },
+    itemActions: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+    },
+    actionButton: {
+      paddingVertical: 8,
+      paddingHorizontal: 12,
+      borderRadius: 4,
+      marginLeft: 8,
+    },
+    editButton: {
+      backgroundColor: theme === 'dark' ? '#2e2e2e' : '#f8fafc',
+      borderColor: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+      borderWidth: 1,
+    },
+    deleteButton: {
+      backgroundColor: theme === 'dark' ? '#2e2e2e' : '#f8fafc',
+      borderColor: theme === 'dark' ? '#f44336' : '#ef4444',
+      borderWidth: 1,
+    },
+    actionButtonText: {
+      fontSize: 12,
+      fontWeight: '500',
+      color: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+    },
+    deleteButtonText: {
+      color: theme === 'dark' ? '#f44336' : '#ef4444',
+    },
+    addButton: {
+      backgroundColor: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+      padding: 14,
+      margin: 16,
+      borderRadius: 4,
+      alignItems: 'center',
+      elevation: 2,
+    },
+    addButtonText: {
+      color: '#ffffff',
+      fontWeight: '500',
+      fontSize: 14,
+    },
+    emptyState: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      padding: 40,
+    },
+    emptyText: {
+      fontSize: 18,
+      color: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+      marginBottom: 8,
+    },
+    emptySubtext: {
+      fontSize: 14,
+      color: theme === 'dark' ? '#757575' : '#94a3b8',
+      textAlign: 'center',
+    },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: theme === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    modalContainer: {
+      width: '85%',
+      backgroundColor: theme === 'dark' ? '#1e1e1e' : '#ffffff',
+      borderRadius: 8,
+      overflow: 'hidden',
+      elevation: 8,
+      borderColor: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+      borderWidth: 1,
+    },
+    modalHeader: {
+      padding: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: theme === 'dark' ? '#333333' : '#e2e8f0',
+    },
+    modalTitle: {
+      fontSize: 18,
+      fontWeight: '500',
+      color: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+      textAlign: 'center',
+    },
+    modalBody: {
+      padding: 16,
+    },
+    input: {
+      backgroundColor: theme === 'dark' ? '#2e2e2e' : '#f1f5f9',
+      borderRadius: 4,
+      padding: 12,
+      fontSize: 16,
+      color: theme === 'dark' ? '#ffffff' : '#1e293b',
+      marginBottom: 16,
+      borderWidth: 1,
+      borderColor: theme === 'dark' ? '#333333' : '#cbd5e1',
+    },
+    descriptionInput: {
+      minHeight: 100,
+      textAlignVertical: 'top',
+    },
+    modalFooter: {
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      padding: 8,
+      borderTopWidth: 1,
+      borderTopColor: theme === 'dark' ? '#333333' : '#e2e8f0',
+    },
+    modalButton: {
+      paddingVertical: 10,
+      paddingHorizontal: 16,
+      borderRadius: 4,
+      marginLeft: 8,
+    },
+    cancelButton: {
+      backgroundColor: theme === 'dark' ? '#2e2e2e' : '#f1f5f9',
+      borderColor: theme === 'dark' ? '#757575' : '#cbd5e1',
+      borderWidth: 1,
+    },
+    cancelButtonText: {
+      color: theme === 'dark' ? '#9e9e9e' : '#64748b',
+      fontWeight: '500',
+    },
+    saveButton: {
+      backgroundColor: theme === 'dark' ? '#4CAF50' : '#3b82f6',
+    },
+    saveButtonText: {
+      color: '#ffffff',
+      fontWeight: '500',
+    },
+  });
+
 
   return (
     <View style={styles.container}>
@@ -139,14 +332,14 @@ const CrudScreen = () => {
                 <TextInput
                   style={styles.input}
                   placeholder="Event name"
-                  placeholderTextColor="#9e9e9e"
+                  placeholderTextColor={theme === 'dark' ? '#9e9e9e' : '#94a3b8'}
                   value={name}
                   onChangeText={setName}
                 />
                 <TextInput
                   style={[styles.input, styles.descriptionInput]}
                   placeholder="Location"
-                  placeholderTextColor="#9e9e9e"
+                  placeholderTextColor={theme === 'dark' ? '#9e9e9e' : '#94a3b8'}
                   value={Location}
                   onChangeText={setLocation}
                   multiline
@@ -177,194 +370,6 @@ const CrudScreen = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#121212', 
-  },
-  header: {
-    padding: 20,
-    paddingTop: 40,
-    backgroundColor: '#1e1e1e',
-    elevation: 2,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    shadowOffset: { height: 2, width: 0 },
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: '500',
-    color: '#4CAF50', 
-  },
-  headerDivider: {
-    height: 2,
-    backgroundColor: '#333333',
-    marginTop: 8,
-  },
-  listContent: {
-    padding: 16,
-    paddingBottom: 80,
-  },
-  item: {
-    backgroundColor: '#1e1e1e', 
-    borderRadius: 8,
-    marginBottom: 12,
-    elevation: 1,
-    shadowColor: '#000',
-    shadowOpacity: 0.05,
-    shadowRadius: 4,
-    shadowOffset: { height: 1, width: 0 },
-    overflow: 'hidden',
-    borderColor: '#333333',
-    borderWidth: 1,
-  },
-  itemPressed: {
-    backgroundColor: '#252525',
-  },
-  itemContent: {
-    padding: 16,
-  },
-  itemName: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#4CAF50', 
-    marginBottom: 4,
-  },
-  itemDescription: {
-    fontSize: 14,
-    color: '#9e9e9e', 
-    marginBottom: 12,
-  },
-  itemActions: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-  },
-  actionButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 4,
-    marginLeft: 8,
-  },
-  editButton: {
-    backgroundColor: '#2e2e2e', 
-    borderColor: '#4CAF50', 
-    borderWidth: 1,
-  },
-  deleteButton: {
-    backgroundColor: '#2e2e2e', 
-    borderColor: '#f44336', 
-    borderWidth: 1,
-  },
-  actionButtonText: {
-    fontSize: 12,
-    fontWeight: '500',
-    color: '#4CAF50', 
-  },
-  deleteButtonText: {
-    color: '#f44336', 
-  },
-  addButton: {
-    backgroundColor: '#4CAF50', 
-    padding: 14,
-    margin: 16,
-    borderRadius: 4,
-    alignItems: 'center',
-    elevation: 2,
-  },
-  addButtonText: {
-    color: '#ffffff',
-    fontWeight: '500',
-    fontSize: 14,
-  },
-  emptyState: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 40,
-  },
-  emptyText: {
-    fontSize: 18,
-    color: '#4CAF50',
-    marginBottom: 8,
-  },
-  emptySubtext: {
-    fontSize: 14,
-    color: '#757575',
-    textAlign: 'center',
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.7)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modalContainer: {
-    width: '85%',
-    backgroundColor: '#1e1e1e', 
-    borderRadius: 8,
-    overflow: 'hidden',
-    elevation: 8,
-    borderColor: '#4CAF50',
-    borderWidth: 1,
-  },
-  modalHeader: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#333333',
-  },
-  modalTitle: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#4CAF50', 
-    textAlign: 'center',
-  },
-  modalBody: {
-    padding: 16,
-  },
-  input: {
-    backgroundColor: '#2e2e2e', 
-    borderRadius: 4,
-    padding: 12,
-    fontSize: 16,
-    color: '#ffffff',
-    marginBottom: 16,
-    borderWidth: 1,
-    borderColor: '#333333',
-  },
-  descriptionInput: {
-    minHeight: 100,
-    textAlignVertical: 'top',
-  },
-  modalFooter: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    padding: 8,
-    borderTopWidth: 1,
-    borderTopColor: '#333333',
-  },
-  modalButton: {
-    paddingVertical: 10,
-    paddingHorizontal: 16,
-    borderRadius: 4,
-    marginLeft: 8,
-  },
-  cancelButton: {
-    backgroundColor: '#2e2e2e', 
-    borderColor: '#757575',
-    borderWidth: 1,
-  },
-  cancelButtonText: {
-    color: '#9e9e9e',
-    fontWeight: '500',
-  },
-  saveButton: {
-    backgroundColor: '#4CAF50',
-  },
-  saveButtonText: {
-    color: '#ffffff',
-    fontWeight: '500',
-  },
-});
+
 
 export default CrudScreen;

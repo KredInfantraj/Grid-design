@@ -12,15 +12,12 @@ import {
   Linking,
   Platform
 } from 'react-native';
-
-
-import MapView, { PROVIDER_GOOGLE,Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import FileViewer from 'react-native-file-viewer';
 import RNFS from 'react-native-fs';
 import { useNavigation } from '@react-navigation/native';
-
-
+import { useTheme } from '../Provider/ThemeProvider';
 
 type Event = {
   id: string;
@@ -181,21 +178,16 @@ const events: Event[] = [
       image: 'https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80',
     },
 ];
-interface PDFResult {
-  filePath?: string;
-  base64?: string;
-}
+
 
 const HomeScreen = () => {
- 
-
+  const { theme, toggleTheme } = useTheme();
   const [showMap, setShowMap] = useState(false);
   const { width } = useWindowDimensions();
   const numColumns = 2;
   const cardWidth = (width - 36) / numColumns;
   const navigation = useNavigation();
- 
-  
+
   const openPDF = async (filePath: string) => {
     try {
       await FileViewer.open(filePath, {
@@ -320,6 +312,44 @@ const HomeScreen = () => {
     }
   };
 
+  
+
+  const colors = {
+    dark: {
+      background: '#101010',
+      cardBackground: '#181818',
+      text: '#ffffff',
+      accent: '#b5ff00',
+      border: '#232323',
+      secondaryText: '#b5ff00',
+      headerBg: '#101010',
+      buttonBg: 'transparent',
+      buttonBorder: '#b5ff00',
+      buttonText: '#b5ff00',
+      cardShadow: '#000000',
+      overlay: 'rgba(16,16,16,0.38)',
+      heartIconBg: 'rgba(16,16,16,0.7)',
+      locationText: '#b5ff00',
+    },
+    light: {
+      background: '#f8fafc',
+      cardBackground: '#ffffff',
+      text: '#1e293b',
+      accent: '#3b82f6',
+      border: '#e2e8f0',
+      secondaryText: '#10b981',
+      headerBg: '#ffffff',
+      buttonBg: '#3b82f6',
+      buttonBorder: '#3b82f6',
+      buttonText: '#ffffff',
+      cardShadow: '#94a3b8',
+      overlay: 'rgba(255,255,255,0.1)',
+      heartIconBg: 'rgba(255,255,255,0.9)',
+      locationText: '#64748b',
+    }
+  };
+
+  const currentColors = colors[theme];
 
   const renderEventCard = ({ item }: { item: Event }) => (
     <TouchableOpacity onPress={() => downloadEventPDF(item)} activeOpacity={0.8}>
@@ -327,7 +357,7 @@ const HomeScreen = () => {
         <Image source={{ uri: item.image }} style={styles.cardImage} />
         <View style={styles.overlay} />
         <View style={styles.heartIcon}>
-          <Text style={{ fontSize: 20, color: '#b5ff00' }}>🤍</Text>
+          <Text style={{ fontSize: 20, color: currentColors.accent }}>🤍</Text>
         </View>
         <View style={styles.cardFooter}>
           <View style={styles.dateRow}>
@@ -347,7 +377,7 @@ const HomeScreen = () => {
         <Image source={{ uri: item.image }} style={styles.horizontalCardImage} />
         <View style={styles.overlay} />
         <View style={styles.heartIconSmall}>
-          <Text style={{ fontSize: 16, color: '#b5ff00' }}>🤍</Text>
+          <Text style={{ fontSize: 16, color: currentColors.accent }}>🤍</Text>
         </View>
         <View style={styles.cardFooter}>
           <View style={styles.dateRow}>
@@ -361,58 +391,294 @@ const HomeScreen = () => {
     </TouchableOpacity>
   );
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: currentColors.background,
+    },
+    headerSection: {
+      paddingTop: 36,
+      paddingBottom: 18,
+      backgroundColor: currentColors.headerBg,
+      alignItems: 'center',
+      borderBottomWidth: theme === 'dark' ? 1 : 0,
+      borderColor: currentColors.border,
+      marginBottom: 2,
+      shadowColor: theme === 'light' ? currentColors.cardShadow : 'transparent',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: theme === 'light' ? 0.1 : 0,
+      shadowRadius: theme === 'light' ? 4 : 0,
+      elevation: theme === 'light' ? 2 : 0,
+      zIndex: 10,
+    },
+    headerRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    headerTitle: {
+      fontSize: 26,
+      fontWeight: 'bold',
+      color: currentColors.accent,
+      textShadowColor: theme === 'dark' ? '#232323' : 'rgba(0,0,0,0.05)',
+      textShadowOffset: { width: 0, height: 1 },
+      textShadowRadius: theme === 'dark' ? 8 : 2,
+      letterSpacing: 1,
+    },
+    headerSubtitle: {
+      fontSize: 14,
+      color: theme === 'dark' ? currentColors.accent : '#64748b',
+      opacity: theme === 'dark' ? 0.7 : 1,
+      marginTop: 4,
+      letterSpacing: 0.5,
+    },
+    themeToggle: {
+      marginLeft: 15,
+      padding: 5,
+      backgroundColor: theme === 'light' ? '#e2e8f0' : 'transparent',
+      borderRadius: 20,
+    },
+    themeToggleText: {
+      fontSize: 20,
+    },
+    buttonContainer: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 15,
+      paddingHorizontal: 20,
+      marginBottom: 20,
+      marginTop: 15,
+    },
+    crudButton: {
+      backgroundColor: currentColors.buttonBg,
+      paddingHorizontal: 22,
+      paddingVertical: 12,
+      borderRadius: 30,
+      borderWidth: 2,
+      borderColor: currentColors.buttonBorder,
+      shadowColor: currentColors.accent,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: theme === 'light' ? 0.2 : 0.4,
+      shadowRadius: theme === 'light' ? 6 : 10,
+      elevation: 5,
+      minWidth: 150,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flexDirection: 'row',
+    },
+    crudButtonText: {
+      color: currentColors.buttonText,
+      fontWeight: 'bold',
+      fontSize: 14,
+      marginLeft: 8,
+      letterSpacing: 0.5,
+    },
+    crudButtonIcon: {
+      fontSize: 16,
+      color: currentColors.buttonText,
+    },
+    listContainer: {
+      padding: 12,
+      paddingBottom: 100,
+    },
+    card: {
+      margin: 6,
+      backgroundColor: currentColors.cardBackground,
+      borderRadius: 16,
+      overflow: 'hidden',
+      elevation: theme === 'light' ? 3 : 6,
+      borderWidth: theme === 'light' ? 1 : 2,
+      borderColor: currentColors.border,
+      shadowColor: theme === 'light' ? currentColors.cardShadow : currentColors.accent,
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: theme === 'light' ? 0.1 : 0.25,
+      shadowRadius: theme === 'light' ? 4 : 8,
+      position: 'relative',
+    },
+    cardImage: {
+      width: '100%',
+      height: 110,
+      resizeMode: 'cover',
+    },
+    overlay: {
+      ...StyleSheet.absoluteFillObject,
+      backgroundColor: currentColors.overlay,
+    },
+    heartIcon: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+      zIndex: 2,
+      backgroundColor: currentColors.heartIconBg,
+      borderRadius: 16,
+      padding: 4,
+    },
+    cardFooter: {
+      padding: 10,
+      paddingTop: 8,
+    },
+    dateRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 2,
+    },
+    dateText: {
+      color: currentColors.secondaryText,
+      fontSize: 12,
+      fontWeight: 'bold',
+    },
+    timeText: {
+      color: currentColors.secondaryText,
+      fontSize: 12,
+    },
+    cardTitle: {
+      color: currentColors.text,
+      fontSize: 15,
+      fontWeight: 'bold',
+      marginBottom: 4,
+      marginTop: 4,
+    },
+    locationText: {
+      color: currentColors.locationText,
+      fontSize: 12,
+      marginBottom: 2,
+    },
+    horizontalCard: {
+      width: 170,
+      height: 110,
+      marginRight: 12,
+      backgroundColor: currentColors.cardBackground,
+      borderRadius: 16,
+      overflow: 'hidden',
+      elevation: theme === 'light' ? 2 : 3,
+      borderWidth: theme === 'light' ? 1 : 2,
+      borderColor: currentColors.border,
+      position: 'relative',
+    },
+    horizontalCardImage: {
+      width: '100%',
+      height: 60,
+      resizeMode: 'cover',
+    },
+    heartIconSmall: {
+      position: 'absolute',
+      top: 6,
+      right: 6,
+      zIndex: 2,
+      backgroundColor: currentColors.heartIconBg,
+      borderRadius: 12,
+      padding: 2,
+    },
+    cardTitleSmall: {
+      color: currentColors.text,
+      fontSize: 13,
+      fontWeight: 'bold',
+      marginBottom: 2,
+      marginTop: 2,
+    },
+    locationTextSmall: {
+      color: currentColors.locationText,
+      fontSize: 11,
+      marginBottom: 2,
+    },
+    horizontalList: {
+      position: 'absolute',
+      bottom: 70,
+      left: 0,
+      right: 0,
+      backgroundColor: 'transparent',
+    },
+    floatingButton: {
+      position: 'absolute',
+      alignSelf: 'center',
+      width: 120,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
+      bottom: 36,
+      backgroundColor: currentColors.cardBackground,
+      borderRadius: 22,
+      borderWidth: 2,
+      borderColor: currentColors.accent,
+      paddingVertical: 8,
+      shadowColor: currentColors.accent,
+      shadowOffset: { width: 0, height: 0 },
+      shadowOpacity: theme === 'light' ? 0.3 : 0.7,
+      shadowRadius: theme === 'light' ? 8 : 12,
+      elevation: 10,
+      zIndex: 20,
+    },
+    floatingButtonIcon: {
+      fontSize: 18,
+      color: currentColors.accent,
+      marginRight: 4,
+    },
+    floatingButtonText: {
+      color: currentColors.accent,
+      fontWeight: 'bold',
+      fontSize: 16,
+      letterSpacing: 1,
+    },
+  });
+
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" backgroundColor="#101010" />
-     
+      <StatusBar barStyle={theme === 'dark' ? 'light-content' : 'dark-content'} backgroundColor={currentColors.background} />
+      
       <View style={styles.headerSection}>
-        <Text style={styles.headerTitle}>🎟️ Book Events</Text>
+        <View style={styles.headerRow}>
+          <Text style={styles.headerTitle}>🎟️ Book Events</Text>
+          <TouchableOpacity onPress={toggleTheme} style={styles.themeToggle}>
+            <Text style={styles.themeToggleText}>
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.headerSubtitle}>Find and book the best rock events in NYC</Text>
       </View>
 
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity 
-        style={styles.crudButton}
-        onPress={() => navigation.navigate('CrudScreen' as never)}
-      >
-        <Text style={styles.crudButtonIcon}>✏️</Text>
-        <Text style={styles.crudButtonText}>Manage Events</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity 
-        style={styles.crudButton}
-        onPress={() => navigation.navigate('Ticket' as never)}
-      >
-        <Text style={styles.crudButtonIcon}>🎟️</Text>
-        <Text style={styles.crudButtonText}>View Tickets</Text>
-      </TouchableOpacity>
-    </View>
-
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity 
+          style={styles.crudButton}
+          onPress={() => navigation.navigate('CrudScreen' as never)}
+        >
+          <Text style={styles.crudButtonIcon}>✏️</Text>
+          <Text style={styles.crudButtonText}>Manage Events</Text>
+        </TouchableOpacity>
+        
+        <TouchableOpacity 
+          style={styles.crudButton}
+          onPress={() => navigation.navigate('Ticket' as never)}
+        >
+          <Text style={styles.crudButtonIcon}>🎟️</Text>
+          <Text style={styles.crudButtonText}>View Tickets</Text>
+        </TouchableOpacity>
+      </View>
 
       {showMap ? (
-    <View style={{ flex: 1 }}>
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        initialRegion={{
-        latitude: 40.7505,
-        longitude: -73.9934,
-        latitudeDelta: 0.09,
-        longitudeDelta: 0.09,
-  }}
-  style={StyleSheet.absoluteFillObject}
->
-  {events.map(event => (
-    <Marker
-      key={event.id}
-      coordinate={{
-        latitude: event.latitude,
-        longitude: event.longitude,
-      }}
-      title={event.title}
-      description={event.location}
-    />
-  ))}
-</MapView>
+        <View style={{ flex: 1 }}>
+          <MapView
+            provider={PROVIDER_GOOGLE}
+            initialRegion={{
+              latitude: 40.7505,
+              longitude: -73.9934,
+              latitudeDelta: 0.09,
+              longitudeDelta: 0.09,
+            }}
+            style={StyleSheet.absoluteFillObject}
+          >
+            {events.map(event => (
+              <Marker
+                key={event.id}
+                coordinate={{
+                  latitude: event.latitude,
+                  longitude: event.longitude,
+                }}
+                title={event.title}
+                description={event.location}
+              />
+            ))}
+          </MapView>
           <FlatList
             data={events}
             renderItem={renderHorizontalCard}
@@ -435,7 +701,6 @@ const HomeScreen = () => {
         />
       )}
 
-     
       <TouchableOpacity
         style={styles.floatingButton}
         onPress={() => setShowMap(!showMap)}
@@ -451,224 +716,5 @@ const HomeScreen = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#101010',
-  },
- 
-  headerSection: {
-    paddingTop: 36,
-    paddingBottom: 18,
-    backgroundColor: '#101010',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: '#232323',
-    marginBottom: 2,
-  },
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    color: '#b5ff00',
-    textShadowColor: '#232323',
-    textShadowOffset: { width: 0, height: 2 },
-    textShadowRadius: 8,
-    letterSpacing: 1,
-  },
-  headerSubtitle: {
-    fontSize: 14,
-    color: '#b5ff00',
-    opacity: 0.7,
-    marginTop: 4,
-    letterSpacing: 0.5,
-  },
-  map: {
-    flex: 1,
-  },
-  listContainer: {
-    padding: 12,
-    paddingBottom: 100, 
-  },
-  card: {
-    margin: 6,
-    backgroundColor: '#181818',
-    borderRadius: 16,
-    overflow: 'hidden',
-    elevation: 6,
-    borderWidth: 2,
-    borderColor: '#232323',
-    shadowColor: '#b5ff00',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    position: 'relative',
-  },
-  cardImage: {
-    width: '100%',
-    height: 110,
-    resizeMode: 'cover',
-  },
-  overlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(16,16,16,0.38)',
-  },
-  heartIcon: {
-    position: 'absolute',
-    top: 10,
-    right: 10,
-    zIndex: 2,
-    backgroundColor: 'rgba(16,16,16,0.7)',
-    borderRadius: 16,
-    padding: 2,
-  },
-  cardFooter: {
-    padding: 8,
-    paddingTop: 6,
-  },
-  dateRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 2,
-  },
-  dateText: {
-    color: '#b5ff00',
-    fontSize: 12,
-    fontWeight: 'bold',
-  },
-  timeText: {
-    color: '#b5ff00',
-    fontSize: 12,
-  },
-  cardTitle: {
-    color: '#fff',
-    fontSize: 15,
-    fontWeight: 'bold',
-    marginBottom: 2,
-    marginTop: 2,
-  },
-  locationText: {
-    color: '#b5ff00',
-    fontSize: 12,
-    marginBottom: 2,
-  },
-
-  horizontalCard: {
-    width: 170,
-    height: 110,
-    marginRight: 12,
-    backgroundColor: '#181818',
-    borderRadius: 16,
-    overflow: 'hidden',
-    elevation: 3,
-    borderWidth: 2,
-    borderColor: '#232323',
-    position: 'relative',
-  },
-  horizontalCardImage: {
-    width: '100%',
-    height: 60,
-    resizeMode: 'cover',
-  },
-  heartIconSmall: {
-    position: 'absolute',
-    top: 6,
-    right: 6,
-    zIndex: 2,
-    backgroundColor: 'rgba(16,16,16,0.7)',
-    borderRadius: 12,
-    padding: 1,
-  },
-  cardTitleSmall: {
-    color: '#fff',
-    fontSize: 13,
-    fontWeight: 'bold',
-    marginBottom: 2,
-    marginTop: 2,
-  },
-  locationTextSmall: {
-    color: '#b5ff00',
-    fontSize: 11,
-    marginBottom: 2,
-  },
-  horizontalList: {
-    position: 'absolute',
-    bottom: 70,
-    left: 0,
-    right: 0,
-    backgroundColor: 'transparent',
-  },
-  floatingButton: {
-    position: 'absolute',
-    alignSelf: 'center',
-    width: 120,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    bottom: 36, 
-    backgroundColor: '#181818',
-    borderRadius: 22,
-    borderWidth: 2,
-    borderColor: '#b5ff00',
-    paddingVertical: 8,
-    shadowColor: '#b5ff00',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.7,
-    shadowRadius: 12,
-    elevation: 10,
-    zIndex: 20,
-  },
-  floatingButtonIcon: {
-    fontSize: 18,
-    color: '#b5ff00',
-    marginRight: 4,
-  },
-  floatingButtonText: {
-    color: '#b5ff00',
-    fontWeight: 'bold',
-    fontSize: 16,
-    letterSpacing: 1,
-  },
- buttonContainer: {
-  flexDirection: 'row',
-  justifyContent: 'center',
-  gap: 15,
-  paddingHorizontal: 20,
-  marginBottom: 20,
-  marginTop: 15,
-},
-
-crudButton: {
-  backgroundColor: 'transparent',
-  paddingHorizontal: 22,
-  paddingVertical: 12,
-  borderRadius: 30,
-  borderWidth: 2,
-  borderColor: '#b5ff00',
-  shadowColor: '#b5ff00',
-  shadowOffset: { width: 0, height: 0 },
-  shadowOpacity: 0.4,
-  shadowRadius: 10,
-  elevation: 5,
-  minWidth: 150,
-  alignItems: 'center',
-  justifyContent: 'center',
-  flexDirection: 'row',
-},
-
-crudButtonText: {
-  color: '#b5ff00',
-  fontWeight: 'bold',
-  fontSize: 14,
-  marginLeft: 8,
-  letterSpacing: 0.5,
-},
-
-crudButtonIcon: {
-  fontSize: 16,
-  color: '#b5ff00',
-},
-});
-
 
 export default HomeScreen;
